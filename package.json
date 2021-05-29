@@ -1,0 +1,32 @@
+{
+  "name": "justine",
+  "version": "1.0.0",
+  "description": "A Discord bot.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "@netlify/functions": "^0.7.2",
+    "typescript": "^4.3.2"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.25.0",
+    "@typescript-eslint/parser": "^4.25.0",
+    "eslint": "^7.27.0",
+    "eslint-config-google": "^0.14.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RogueDynamite/Justine.git"
+  },
+  "author": "Nicholas De Leon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RogueDynamite/Justine/issues"
+  },
+  "homepage": "https://github.com/RogueDynamite/Justine#readme"
+}
