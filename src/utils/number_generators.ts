@@ -26,7 +26,7 @@ export abstract class NumberGenerator {
         throw new Error(`max must be less than ${Number.MAX_SAFE_INTEGER}`);
       }
       if (Number.MIN_SAFE_INTEGER > min) {
-        throw new Error(`min must be less than ${Number.MIN_SAFE_INTEGER}`);
+        throw new Error(`min must be greater than ${Number.MIN_SAFE_INTEGER}`);
       }
       this.min = min;
       this.max = max;
@@ -91,8 +91,8 @@ export class RandomNumberGenerator extends NumberGenerator {
  * @return {number[]} The array generated numbers. Will have length num.
  */
 export function generateNumbers(num: number, gen: NumberGenerator): number[] {
-  if (!Number.isInteger(num)) {
-    throw new Error('can only generate an integer number of numbers');
+  if (!Number.isInteger(num) || num <= 0) {
+    throw new Error('can only generate a positive integer number of numbers');
   }
   const arr = [];
   for (let i = 0; i < num; i++) {

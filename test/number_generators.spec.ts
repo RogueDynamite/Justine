@@ -4,9 +4,12 @@
  */
 
 import {expect} from 'chai';
-import {CyclicNumberGenerator} from '../src/utils/number_generators';
+import {
+  CyclicNumberGenerator,
+  generateNumbers,
+} from '../src/utils/number_generators';
 
-describe('Cyclic Number Generator Tests', () => {
+describe('cyclic number generator tests', () => {
   it('cycles through all integers', () => {
     const numGen = new CyclicNumberGenerator(0, 7);
     let i = 0;
@@ -35,5 +38,23 @@ describe('Cyclic Number Generator Tests', () => {
     expect(numGen.nextNumber()).to.equal(i);
     expect(numGen.nextNumber()).to.equal(i + 1);
     expect(numGen.nextNumber()).to.equal(i);
+  });
+});
+
+describe('generateNumber() tests', () => {
+  it('should generate numbers correctly', () => {
+    const numGen = new CyclicNumberGenerator(0, 7);
+    const arr = generateNumbers(50, numGen);
+    expect(arr).to.have.length(50);
+    let i = 0;
+    while (i < 50) {
+      expect(arr[i]).to.equal(i % 7);
+      i += 1;
+    }
+  });
+  it('should error on incorrect num', () => {
+    const numGen = new CyclicNumberGenerator(0, 7);
+    expect(() => generateNumbers(1.2, numGen)).to.throw();
+    expect(() => generateNumbers(-1, numGen)).to.throw();
   });
 });

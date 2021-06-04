@@ -4,3 +4,8 @@
 
     # Specifies `esbuild` for functions bundling.
     node_bundler = "esbuild"
+
+[build]
+    # Default build command.
+    command = "npm run build"
+    
