@@ -36,6 +36,7 @@ export const handler: Handler = async (event, _context) => {
     return {
       statusCode: 200,
       body: JSON.stringify({type: InteractionCallbackType.Pong}),
+      headers: {'Content-Type': 'application/json'},
     };
   }
   try {
@@ -45,6 +46,7 @@ export const handler: Handler = async (event, _context) => {
       return {
         statusCode: 200,
         body: JSON.stringify(commandInfo?.handler(interaction)),
+        headers: {'Content-Type': 'application/json'},
       };
     }
     // In the rare case we end up here, we send a 400 error to indicate that
@@ -67,6 +69,7 @@ export const handler: Handler = async (event, _context) => {
       body: JSON.stringify(
           makeBasicInteractionCallback(msg, true),
       ),
+      headers: {'Content-Type': 'application/json'},
     };
   }
 };
