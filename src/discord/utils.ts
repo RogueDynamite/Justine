@@ -9,8 +9,11 @@ import nacl from 'tweetnacl';
 import
 {
   ApplicationCommandOption,
+  ApplicationCommandInteractionDataOption,
   Interaction,
   InteractionResponse,
+  InteractionCallbackType,
+  InteractionCallbackFlags,
 } from './resources';
 
 /**
@@ -38,6 +41,42 @@ export function verifyRequest(event: HandlerEvent): boolean {
       Buffer.from(signature, 'hex'),
       Buffer.from(publicKey, 'hex'),
   );
+}
+
+/**
+ * Given data from an Interaction, returns an object that maps the names
+ * of parameters to their ApplicationCommandInteractionDataOption. Errors
+ * if the data is undefined.
+ * @param {ApplicationCommandInteractionDataOption[]} data Data from the
+ * interaction.
+ * @return {object} A mapping from the name of a parameter to its options.
+ */
+export function convertOptions(
+    data: ApplicationCommandInteractionDataOption[] | undefined):
+    {[key: string]: ApplicationCommandInteractionDataOption} {
+  if (data === undefined) throw new Error('no data found');
+  const obj: {[key: string]: ApplicationCommandInteractionDataOption} = {};
+  data.forEach((value: ApplicationCommandInteractionDataOption, _) => {
+    obj[value.name] = value;
+  });
+  return obj;
+}
+
+/**
+ * Helper to make a basic response to an Interaction.
+ * @param {string} content The message that should be displayed in the response
+ * @param {boolean} hidden True if the message should be only shown the user.
+ * @return {InteractionResponse} The response with the content.
+ */
+export function makeBasicInteractionCallback(content: string, hidden: boolean):
+ InteractionResponse {
+  return {
+    type: InteractionCallbackType.ChannelMessageWithSource,
+    data: {
+      content: content,
+      flags: hidden ? InteractionCallbackFlags.HIDDEN : 0,
+    },
+  };
 }
 
 /** A helper interface that every slash command should export. It gives us

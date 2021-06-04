@@ -5,7 +5,10 @@ import {
   InteractionCallbackType,
   InteractionType,
 } from '../src/discord/resources';
-import {verifyRequest} from '../src/discord/utils';
+import {
+  makeBasicInteractionCallback,
+  verifyRequest,
+} from '../src/discord/utils';
 
 export const handler: Handler = async (event, _context) => {
   // We only allow POST requests with a body.
@@ -21,15 +24,26 @@ export const handler: Handler = async (event, _context) => {
       body: JSON.stringify({type: InteractionCallbackType.Pong}),
     };
   }
-  // Try to find the command specified in the request.
-  if (interaction.data && nameToCommand[interaction.data.name]) {
-    const commandInfo = nameToCommand[interaction.data.name];
+  try {
+    // Try to find the command specified in the request.
+    if (interaction.data && nameToCommand[interaction.data.name]) {
+      const commandInfo = nameToCommand[interaction.data.name];
+      return {
+        statusCode: 200,
+        body: JSON.stringify(commandInfo?.handler(interaction)),
+      };
+    }
+    // In the rare case we end up here, we send a 400 error to indicate that
+    // we could not find the command.
+    return {statusCode: 400};
+  } catch (e) {
+    // If the handler returned an error (due to some bad arguments), we give
+    // a hidden message back to the user.
     return {
       statusCode: 200,
-      body: JSON.stringify(commandInfo?.handler(interaction)),
+      body: JSON.stringify(
+          makeBasicInteractionCallback(`Error: ${e.message}`, true),
+      ),
     };
   }
-  // In the rare case we end up here, we send a 400 error to indeicate that
-  // we could not find the command.
-  return {statusCode: 400};
 };
