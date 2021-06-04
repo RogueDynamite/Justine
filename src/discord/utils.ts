@@ -45,8 +45,8 @@ export function verifyRequest(event: HandlerEvent): boolean {
 
 /**
  * Given data from an Interaction, returns an object that maps the names
- * of parameters to their ApplicationCommandInteractionDataOption. Errors
- * if the data is undefined.
+ * of parameters to their ApplicationCommandInteractionDataOption. Returns
+ * an empty object if undefined is passed in.
  * @param {ApplicationCommandInteractionDataOption[]} data Data from the
  * interaction.
  * @return {object} A mapping from the name of a parameter to its options.
@@ -54,7 +54,7 @@ export function verifyRequest(event: HandlerEvent): boolean {
 export function convertOptions(
     data: ApplicationCommandInteractionDataOption[] | undefined):
     {[key: string]: ApplicationCommandInteractionDataOption} {
-  if (data === undefined) throw new Error('no data found');
+  if (data === undefined) return {};
   const obj: {[key: string]: ApplicationCommandInteractionDataOption} = {};
   data.forEach((value: ApplicationCommandInteractionDataOption, _) => {
     obj[value.name] = value;
