@@ -16,5 +16,8 @@ const appID = process.env['DISCORD_APPLICATION_ID'];
  */
 export async function createCommand(info: SlashCommandInfo) {
   const createCommandURL = `${DISCORD_API_URL}/applications/${appID}/commands`;
-  await axios.post(createCommandURL, info);
+  const headers = {
+    'Authorization': `Bot ${process.env['DISCORD_BOT_TOKEN']}`,
+  };
+  await axios.post(createCommandURL, info, {headers: headers});
 }
