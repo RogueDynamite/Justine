@@ -14,6 +14,7 @@ import {
   convertOptions,
   makeBasicInteractionCallback,
 } from '../discord/utils';
+import {ArgumentError} from '../utils/errors';
 import {
   generateNumbers,
   RandomNumberGenerator,
@@ -35,10 +36,10 @@ function discordHandler(interaction: Interaction): InteractionResponse {
   const hidden = map['hidden']?.value as boolean;
   // Check for errors.
   if (max === undefined || min === undefined) {
-    throw new Error('missing min or max');
+    throw new ArgumentError('missing min or max');
   }
   if (rolls < 1 || rolls > 100) {
-    throw new Error('rolls must be between 1 and 100');
+    throw new ArgumentError('rolls must be between 1 and 100');
   }
   // Return the interaction with the numbers if everything is OK.
   let content: string = '';

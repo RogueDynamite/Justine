@@ -3,6 +3,8 @@
  * @author Nicholas De Leon
  */
 
+import {ArgumentError} from './errors';
+
 /** A number generator is simply an object that can generate numbers. */
 export abstract class NumberGenerator {
     readonly min: number;
@@ -17,16 +19,20 @@ export abstract class NumberGenerator {
      */
     constructor(min: number = 0, max: number = min+7) {
       if (min >= max) {
-        throw new Error('min must be less than the max');
+        throw new ArgumentError('min must be less than the max');
       }
       if (!Number.isInteger(min) || !Number.isInteger(max)) {
-        throw new Error('min and max must be integers');
+        throw new ArgumentError('min and max must be integers');
       }
       if (Number.MAX_SAFE_INTEGER < max) {
-        throw new Error(`max must be less than ${Number.MAX_SAFE_INTEGER}`);
+        throw new ArgumentError(
+            `max must be less than ${Number.MAX_SAFE_INTEGER}`,
+        );
       }
       if (Number.MIN_SAFE_INTEGER > min) {
-        throw new Error(`min must be greater than ${Number.MIN_SAFE_INTEGER}`);
+        throw new ArgumentError(
+            `min must be greater than ${Number.MIN_SAFE_INTEGER}`,
+        );
       }
       this.min = min;
       this.max = max;
@@ -92,7 +98,7 @@ export class RandomNumberGenerator extends NumberGenerator {
  */
 export function generateNumbers(num: number, gen: NumberGenerator): number[] {
   if (!Number.isInteger(num) || num <= 0) {
-    throw new Error('can only generate a positive integer number of numbers');
+    throw new ArgumentError('num must be a positive integer');
   }
   const arr = [];
   for (let i = 0; i < num; i++) {

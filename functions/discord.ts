@@ -1,5 +1,6 @@
 import {Handler} from '@netlify/functions';
 import {nameToCommand} from '../src/commands';
+import {Logger} from 'tslog';
 import {
   Interaction,
   InteractionCallbackType,
@@ -9,16 +10,29 @@ import {
   makeBasicInteractionCallback,
   verifyRequest,
 } from '../src/discord/utils';
+import {
+  ServerError,
+  ArgumentError,
+} from '../src/utils/errors';
 
 export const handler: Handler = async (event, _context) => {
+  const log = new Logger();
+  log.info('event', event);
   // We only allow POST requests with a body.
-  if (event.httpMethod != 'POST') return {statusCode: 405};
-  else if (event.body === null) return {statusCode: 400};
-  // Only allow authenticated requests from Discord to access the functions.
-  else if (verifyRequest(event)) return {statusCode: 401};
+  if (event.httpMethod != 'POST') {
+    log.info('event was not a POST request');
+    return {statusCode: 405};
+  } else if (event.body === null) {
+    log.info('event body was null');
+    return {statusCode: 400};
+  } else if (verifyRequest(event)) {
+    log.info('request has an invalid signature');
+    return {statusCode: 401};
+  }
   const interaction = JSON.parse(event.body) as Interaction;
   // ACK if the request is a PING.
   if (interaction.type === InteractionType.Ping) {
+    log.info('ping received');
     return {
       statusCode: 200,
       body: JSON.stringify({type: InteractionCallbackType.Pong}),
@@ -37,12 +51,21 @@ export const handler: Handler = async (event, _context) => {
     // we could not find the command.
     return {statusCode: 400};
   } catch (e) {
-    // If the handler returned an error (due to some bad arguments), we give
-    // a hidden message back to the user.
+    // If the handler returned an error, we give a hidden message back to
+    // the user with the error.
+    let msg = '';
+    if (e instanceof ServerError) {
+      log.error(e);
+      msg = 'The server encountered an error while handling your command.';
+    } else if (e instanceof ArgumentError) {
+      msg = `Invalid arguments for this command: ${e.message}.`;
+    } else {
+      msg = `Error: ${e.message || e}.`;
+    }
     return {
       statusCode: 200,
       body: JSON.stringify(
-          makeBasicInteractionCallback(`Error: ${e.message}`, true),
+          makeBasicInteractionCallback(msg, true),
       ),
     };
   }
