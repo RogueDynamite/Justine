@@ -25,8 +25,8 @@ import
  */
 export function verifyRequest(event: HandlerEvent): boolean {
   const publicKey = process.env['DISCORD_PUBLIC_KEY'];
-  const signature = event.headers['X-Signature-Ed25519'];
-  const timestamp = event.headers['X-Signature-Timestamp'];
+  const signature = event.multiValueHeaders['X-Signature-Ed25519'];
+  const timestamp = event.multiValueHeaders['X-Signature-Timestamp'];
   const body = event.body;
   // If we cannot verify the signature because anything is missing, we default
   // deny the request.
@@ -37,8 +37,8 @@ export function verifyRequest(event: HandlerEvent): boolean {
     return false;
   }
   return nacl.sign.detached.verify(
-      Buffer.from(timestamp + body),
-      Buffer.from(signature, 'hex'),
+      Buffer.from((timestamp[0] || '') + body),
+      Buffer.from(signature[0] || '', 'hex'),
       Buffer.from(publicKey, 'hex'),
   );
 }

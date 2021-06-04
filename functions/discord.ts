@@ -27,7 +27,7 @@ export const handler: Handler = async (event, _context) => {
     return {statusCode: 400};
   } else if (!verifyRequest(event)) {
     log.info('request has an invalid signature');
-    return {statusCode: 401};
+    return {statusCode: 401, body: 'invalid request signature'};
   }
   const interaction = JSON.parse(event.body) as Interaction;
   // ACK if the request is a PING.
