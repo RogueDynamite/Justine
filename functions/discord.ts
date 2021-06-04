@@ -25,7 +25,7 @@ export const handler: Handler = async (event, _context) => {
   } else if (event.body === null) {
     log.info('event body was null');
     return {statusCode: 400};
-  } else if (verifyRequest(event)) {
+  } else if (!verifyRequest(event)) {
     log.info('request has an invalid signature');
     return {statusCode: 401};
   }
