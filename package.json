@@ -21,10 +21,12 @@
     "eslint": "^7.27.0",
     "eslint-config-google": "^0.14.0",
     "mocha": "^8.4.0",
+    "nyc": "^15.1.0",
     "ts-node": "^10.0.0"
   },
   "scripts": {
-    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register test/*.spec.ts",
+    "test":"env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register test/*.spec.ts",
+    "test-with-coverage": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' nyc --reporter=html mocha -r ts-node/register test/*.spec.ts",
     "build": "node build.js"
   },
   "repository": {
