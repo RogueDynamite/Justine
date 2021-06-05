@@ -11,7 +11,7 @@ import {
 
 describe('cyclic number generator tests', () => {
   it('cycles through all integers', () => {
-    const numGen = new CyclicNumberGenerator(0, 7);
+    const numGen = new CyclicNumberGenerator(0, 6);
     let i = 0;
     while (i < 12) {
       expect(numGen.nextNumber()).to.equal(i % 7);
@@ -37,13 +37,14 @@ describe('cyclic number generator tests', () => {
     // Cyclic behavior
     expect(numGen.nextNumber()).to.equal(i);
     expect(numGen.nextNumber()).to.equal(i + 1);
+    expect(numGen.nextNumber()).to.equal(i + 2);
     expect(numGen.nextNumber()).to.equal(i);
   });
 });
 
 describe('generateNumber() tests', () => {
   it('should generate numbers correctly', () => {
-    const numGen = new CyclicNumberGenerator(0, 7);
+    const numGen = new CyclicNumberGenerator(0, 6);
     const arr = generateNumbers(50, numGen);
     expect(arr).to.have.length(50);
     let i = 0;
@@ -53,7 +54,7 @@ describe('generateNumber() tests', () => {
     }
   });
   it('should error on incorrect num', () => {
-    const numGen = new CyclicNumberGenerator(0, 7);
+    const numGen = new CyclicNumberGenerator(0, 6);
     expect(() => generateNumbers(1.2, numGen)).to.throw();
     expect(() => generateNumbers(-1, numGen)).to.throw();
   });

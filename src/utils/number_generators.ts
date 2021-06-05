@@ -12,12 +12,12 @@ export abstract class NumberGenerator {
 
     /**
      * Creates a number generator that generates integers in the
-     * interval [min, max).
+     * interval [min, max].
      * @param {number} min The lower bound of the range.
      * @param {number} max The upper bound of the range.
      * @constructor
      */
-    constructor(min: number = 0, max: number = min+7) {
+    constructor(min: number = 0, max: number = min+6) {
       if (min >= max) {
         throw new ArgumentError('min must be less than the max');
       }
@@ -48,11 +48,11 @@ export class CyclicNumberGenerator extends NumberGenerator {
 
     /**
      * Creates a cyclic number generator that starts at min and ends at max.
-     * @param {number} min The lower bound of the cyclic range (inclusive).
-     * @param {number} max The upper bound of the cyclic range (exclusive).
+     * @param {number} min The lower bound of the cyclic range.
+     * @param {number} max The upper bound of the cyclic range.
      * @constructor
      */
-    constructor(min: number = 0, max: number = min+7) {
+    constructor(min: number = 0, max: number = min+6) {
       super(min, max);
       this.curr = min;
     }
@@ -63,7 +63,7 @@ export class CyclicNumberGenerator extends NumberGenerator {
      */
     public nextNumber(): number {
       const temp = this.curr;
-      this.curr = this.curr === this.max - 1 ? this.min : this.curr + 1;
+      this.curr = this.curr === this.max ? this.min : this.curr + 1;
       return temp;
     }
 }
@@ -77,7 +77,7 @@ export class RandomNumberGenerator extends NumberGenerator {
    * @param {number} max The upper bound of the range.
    * @constructor
    */
-  constructor(min: number = 0, max: number = min+7) {
+  constructor(min: number = 0, max: number = min+6) {
     super(min, max);
   }
 
