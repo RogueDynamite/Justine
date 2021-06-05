@@ -1,5 +1,5 @@
 /**
- * @file Contains tests for the commands that generate numbers.
+ * @file Contains tests for the number generators.
  * @author Nicholas De Leon
  */
 
@@ -7,6 +7,7 @@ import {expect} from 'chai';
 import {
   CyclicNumberGenerator,
   generateNumbers,
+  RandomNumberGenerator,
 } from '../src/utils/number_generators';
 
 describe('cyclic number generator tests', () => {
@@ -57,5 +58,18 @@ describe('generateNumber() tests', () => {
     const numGen = new CyclicNumberGenerator(0, 6);
     expect(() => generateNumbers(1.2, numGen)).to.throw();
     expect(() => generateNumbers(-1, numGen)).to.throw();
+  });
+});
+
+describe('random number generator tests', () => {
+  it('should produce the right integers', () => {
+    const seenNum = new Array(7).fill(false);
+    // If the number generator generates all numbers in the range with equal
+    // probability, this will fail with an incredibly low probability.
+    generateNumbers(100, new RandomNumberGenerator(0, 6)).forEach((value) => {
+      expect(value).to.be.below(7).and.above(-1);
+      seenNum[value] = true;
+    });
+    expect(seenNum.every((num) => num)).to.be.equal(true);
   });
 });

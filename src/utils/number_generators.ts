@@ -72,7 +72,7 @@ export class CyclicNumberGenerator extends NumberGenerator {
 export class RandomNumberGenerator extends NumberGenerator {
   /**
    * Creates a random number generator that generates random integers
-   * uniformly in the interval [min, max).
+   * uniformly in the interval [min, max].
    * @param {number} min The lower bound of the range.
    * @param {number} max The upper bound of the range.
    * @constructor
@@ -83,10 +83,10 @@ export class RandomNumberGenerator extends NumberGenerator {
 
   /**
    * Returns a random integer between min and max.
-   * @return {number} A psuedorandom integer in the range [min, max).
+   * @return {number} A psuedorandom integer in the range [min, max].
    */
   public nextNumber(): number {
-    return Math.floor(Math.random() * (this.max - this.min)) + this.min;
+    return Math.floor(Math.random() * ((this.max+1) - this.min)) + this.min;
   }
 }
 

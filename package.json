@@ -29,7 +29,8 @@
   "scripts": {
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register test/*.spec.ts",
     "test-with-coverage": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' nyc --reporter=html mocha -r ts-node/register test/*.spec.ts",
-    "build": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' ts-node build.ts"
+    "build": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' ts-node build.ts",
+    "ci+cd": "npm run build && npm run test"
   },
   "repository": {
     "type": "git",
